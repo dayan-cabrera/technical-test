@@ -1,0 +1,212 @@
+## Sección 1: Symfony
+
+1. **Pregunta de Configuración:**
+- Describe los pasos básicos para levantar un proyecto en Symfony: 
+
+1.1-Crear un proyecto: symfony new symfony --version="7.1.*" --webapp en caso de no tener el proyecto, caso contrario
+composer install para instalar las dependencias.
+1.2-Levantar el server localmente: symfony serever:start --port=8000
+
+3. **Pregunta Teórica:**
+- Explica la arquitectura de Symfony y cómo se organiza un proyecto típico en términos de carpetas y archivos.
+
+La arquitectura de Symfony se basa en el patrón Modelo-Vista-Controlador (MVC), esto  se centra en separar la lógica de negocio, la interfaz de usuario y el tratado de datos. En terminos de carpteas lo organizaría tenirndo una carpeta ¨views¨ para ahi dentro tener todo lo referente a las vistas, una carpeta ¨models¨ para los modelos y ¨controllers¨ para lo controladores, dentro de cada una se separaría a gusto del programador donde puede aplicar patrones de diseño en dependencia de lo que exija el proyecto. 
+
+***Nota: Sinceramente las pruebas siempre  las habia hecho manual, estas pruebas unitaria la hice a base de documentracion y de chatgpt
+
+6 **Pregunta Teórica:**
+- Explica el concepto de Dependency Injection (DI) en Symfony y cómo se configura:
+
+Es un patrón de diseño donde se le dice al  sistema que depende de una interfaz en lugar de una implementación concreta. Esto hace facilita el cambio de implementacion ya que puedes cambiar la implementación subyacente sin afectar al resto de tu código, siempre y cuando la nueva implementación cumpla con el contrato definido por la interfaz.
+
+composer require symfony/dependency-injection
+
+Se añade services.yaml y luego se inyecta donde sea necesario.
+ejemplo de como se veria:
+services:
+    App\Repository\UserRepository:
+        arguments:
+        	tags: ['app.repository']
+        	
+    App\Repository\UserInterface: '@App\Repository\Repository'
+    
+ 7. **Pregunta de Código:**
+- Escribe una consulta Doctrine en Symfony para obtener todos los registros de una entidad Product donde el precio sea mayor a 100.
+
+$entityManager = $this->getDoctrine()->getManager();
+
+$queryBuilder = $entityManager->createQueryBuilder()
+    ->select('p')
+    ->from(Product::class, 'p')
+    ->where('p.price > :min_price')
+    ->setParameter('min_price', 100);
+
+$results = $queryBuilder->getQuery()->getResult();
+
+
+8. **Pregunta Teórica:**
+- ¿Qué es el Event Dispatcher en Symfony y para qué se utiliza?
+Es un componente que permite a diferentes partes de la aplicación comunicarse entre sí mediante eventos y oyentes, esto facilita la creación de sistemas altamente modulares y desacoplados, donde los componentes pueden reaccionar ante ciertos eventos sin depender directamente unos de otros.
+
+
+## Sección 2: JavaScript
+
+1. **Pregunta Teórica:**
+- Explica la diferencia entre var, let y const en JavaScript.
+
+Las variables declaradas con var tienen un alcance de función o global. Las variables declaradas con let tienen un alcance de bloque al igual las declaradas con const a diferencia que las declaradas con esta ultima no se puede reasignar un valor.
+
+
+3. **Pregunta Teórica:**
+- ¿Qué es el Event Loop en JavaScript y cómo funciona?
+El Event Loop es un bucle infinito que continuamente verifica si hay tareas pendientes para ejecutar y en lugar de ejecutar las tareas de forma secuencial, el Event Loop las organiza y gestiona de manera asíncrona, permitiendo que el programa siga respondiendo a otros eventos mientras espera la finalización de otras operaciones.
+
+5. **Pregunta Teórica:**
+- ¿Qué es el DOM y cómo se manipula usando JavaScript?
+
+El DOM proporciona otras formas de presentar, guardar y manipular este mismo documento, es una representación completamente orientada al objeto de la web.Se maipula usando selecotrores (ej: document.getElementById(),  document.getElementsByClassName(), document.getElementsByName()) y un vez seleccionado el elemento a modificar se le aplica lo que se le vaya a hacer.
+
+7. **Pregunta Teórica:**
+- Explica qué es una Promesa en JavaScript y proporciona un ejemplo básico.
+
+Una promesa es un objeto que representa  la terminación o el fracaso de una operación asíncrona.
+
+const obtenerDatos = () => {
+    return new Promise((resolve, reject) => {
+        datos = ...
+        resolve(datos);
+      }, 2000); 
+    });
+  };
+  
+  9. **Pregunta Teórica:**
+- ¿Cuál es la diferencia entre null, undefined y NaN en JavaScript?
+
+  null representa intencionalmente un valor no existente o nulo, undefined seria una variable q ha sido declarada pero no se le ha asignado un valor y NaN significa "Not a Number"
+  
+  ## Sección 3: Git
+
+1. **Pregunta Teórica:**
+- ¿Qué es Git y para qué se utiliza en el desarrollo de software?
+
+Git es un sistema de control de versiones  y se usa para facilitar el trabajo en equipo, la revisión de código, el mantenimiento del historial de cambios...
+
+2. **Pregunta de Comandos:**
+- ¿Cuál es el comando para clonar un repositorio de Git?
+git clone ...
+
+3. **Pregunta Teórica:**
+- Explica qué es un "branch" (rama) en Git y para qué se utiliza.
+
+Un branch en git es una línea independiente de desarrollo que se bifurca del proyecto principal, esto permite trabajar en nuevas funcionalidades sin afectar el código principal.
+
+4. **Pregunta de Comandos:**
+- Proporciona los comandos necesarios para crear una nueva rama llamada feature-xyz, cambiar a esa rama, y luego fusionarla con la rama main.
+git brach feature-xyz
+git switch feature-xyz
+git add .
+git commit -m "added the new feature"
+git switch main
+git merge feature-xyz
+
+5. **Pregunta Teórica:**
+- ¿Qué es un "merge conflict" y cómo se resuelve?
+Un merge conflict ocurre cuando dos o más personas han modificado las mismas líneas de código en un archivo y git no puede combinar automáticamente esos cambios al intentar fusionar las ramas. El problema lo resolveria el encargado de revisar el proyecto ya que este deberia de saber cual es el codigo que se necesita y al git marcar lo conflictos, una solucion seria borrar el código que no se va a emplear para quitar el conflicto y luego continuar con el merge una vez todos los conflictos estén resuletos.
+
+6. **Pregunta de Comandos:**
+- ¿Cuál es el comando para visualizar el estado actual del repositorio en Git?
+git status
+
+7. **Pregunta Teórica:**
+- Explica la diferencia entre git pull y git fetch.
+La diferencia radica en la forma en que manejan los cambios del repositorio remoto en tu repositorio local, mietras git fetch descarga los cambios del repositorio remoto no los integra automáticamente, por otro lado git pull descarga e integra automáticamente.
+
+8. **Pregunta de Comandos:**
+- ¿Cuál es el comando para revertir el último commit en Git?
+git revert HEAD
+
+9. **Pregunta Teórica:**
+- ¿Qué es un "remote repository" y cómo se configura en Git?
+Un repositorio remoto es repositorio alojado en un servidor externo como GitHub o GitLab.
+y se integra añadiendo el repositorio a git con: git remote add origin ...
+
+10. **Pregunta de Comandos:**
+- Proporciona los comandos para añadir todos los cambios en los archivos al staging area y luego realizar un commit con el mensaje "Initial commit".
+git init
+git add .
+git commit -m "Initial commit"
+
+
+## Sección 4: MySQL
+
+1. **Pregunta de Código:**
+- Escribe una consulta SQL para crear una base de datos llamada company y una tabla llamada employees con las siguientes columnas: id (INT, auto-increment, primary key), name (VARCHAR(100)), position (VARCHAR(50)), salary (DECIMAL(10, 2)), y hire_date (DATE).
+create database company;
+create table employees(
+    	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	position VARCHAR(50) NOT NULL,
+	salary DECIMAL(10, 2) NOT NULL,
+	hire_date DATE NOT NULL
+);
+
+2. **Pregunta Teórica:**
+- Explica la diferencia entre una clave primaria (Primary Key) y una clave foránea (Foreign Key) en MySQL. ¿Cuándo y por qué se utilizan?
+
+Las claves primarias identifican de manera única las tuplas en una tabla, mientras que las claves foráneas establecen relaciones entre tablas, ambas son indispensables en el diseño de bases de datos relacionales.
+
+3. **Pregunta de Código:**
+- Escribe una consulta SQL para insertar tres registros en la tabla employees creada en la pregunta 2.
+
+INSERT INTO employees (name, position, salary, hire_date)
+VALUES
+	('Pedro', 'Backend developer', 75000.00, '2022-03-15'),
+    	('Paco', 'Backend developer', 65000.50, '2021-09-01'),
+    	('Pablo', 'Backend developer', 52000.75, '2023-01-10');
+
+4. **Pregunta de Código:**
+- Muestra cómo actualizar el salario de un empleado específico en la tabla employees. Por ejemplo, actualiza el salario del empleado con id = 1 a 60000.00.
+
+ update employees set salary=60000.00 where id=1;
+
+
+5. **Pregunta de Código:**
+- Escribe una consulta SQL para seleccionar todos los empleados cuyo salario sea mayor a 50000.00 y ordenarlos por el campo hire_date en orden descendente.
+
+select * employees where salary > 50000.00 order by 50000.00 desc;
+
+6. **Pregunta Teórica:**
+- ¿Qué es una transacción en MySQL y cómo se utiliza? Proporciona un ejemplo de uso.
+
+Una transacción en MySQL es un conjunto consultas SQL que se ejecutan como una sola unidad lógica de trabajo, todas las operaciones dentro de una transacción deben completarse correctamente, caso cotrario todas las cosnultas anteriores de deshacen.
+
+START TRANSACTION;
+
+INSERT INTO employees (name, position, salary, hire_date)
+VALUES
+    ('Pedro', 'Backend developer', 75000.00, '2022-03-15'),
+    ('Paco', 'Backend developer', 65000.50, '2021-09-01'),
+    ('Pablo', 'Backend developer', 52000.75, '2023-01-10');
+
+
+SELECT @num_rows := ROW_COUNT();
+
+IF @num_rows = 3 THEN
+    COMMIT; 
+    SELECT 'Los registros se insertaron correctamente' AS Mensaje;
+ELSE
+    ROLLBACK;
+    SELECT 'Error al insertar los registros' AS Mensaje;
+END IF;
+
+7. **Pregunta de Código:**
+- Crea una vista en MySQL llamada high_earning_employees que seleccione todas las columnas de los empleados cuyo salario sea mayor a 70000.00.
+
+CREATE VIEW high_earning_employees AS
+SELECT *
+FROM employees
+WHERE salary > 70000.00;
+
+
+
+  
